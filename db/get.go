@@ -109,3 +109,35 @@ func SearchStudent(req types.StudentSearchReq) (*[]types.Student, error) {
 
 	return &students, nil
 }
+
+func GroupStudentByLastName() (*[]map[string]interface{}, error) {
+	var students []map[string]interface{}
+
+	pipeline := bson.A{
+		bson.D{{"$match", bson.D{{"class_name", "golang3008"}}}},
+		bson.D{{"$group", bson.D{
+			{"_id", "$last_name"},
+			{"last_name", bson.D{{"$first", "$last_name"}}},
+			{"class_name", bson.D{{"$first", "$class_name"}}},
+			{"first_name", bson.D{{"$push", "$first_name"}}},
+			{"id", bson.D{{"$push", "$id"}}},
+		}}},
+	}
+
+	cur, err := Client.Database(dbName).Collection("student").Aggregate(context.TODO(), pipeline)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for cur.Next(context.TODO()) {
+		var student map[string]interface{}
+		err = cur.Decode(&student)
+		if err != nil {
+			return nil, err
+		}
+		students = append(students, student)
+	}
+
+	return &students, nil
+}
