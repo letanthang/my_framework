@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/letanthang/my_framework/db/types"
@@ -130,14 +131,11 @@ func GroupStudentByLastName() (*[]map[string]interface{}, error) {
 		return nil, err
 	}
 
-	for cur.Next(context.TODO()) {
-		var student map[string]interface{}
-		err = cur.Decode(&student)
-		if err != nil {
-			return nil, err
-		}
-		students = append(students, student)
+	if err = cur.All(context.TODO(), &students); err != nil {
+		return nil, err
 	}
+
+	fmt.Println("group by last name")
 
 	return &students, nil
 }
