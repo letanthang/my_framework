@@ -33,14 +33,16 @@ func GetAllStudent() (*[]types.Student, error) {
 		return nil, err
 	}
 
-	for cur.Next(context.TODO()) {
-		var student types.Student
-		err = cur.Decode(&student)
-		if err != nil {
-			return nil, err
-		}
-		students = append(students, student)
-	}
+	cur.All(context.TODO(), &students)
+
+	// for cur.Next(context.TODO()) {
+	// 	var student types.Student
+	// 	err = cur.Decode(&student)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	students = append(students, student)
+	// }
 
 	return &students, nil
 }
@@ -58,13 +60,8 @@ func GetStudent(req types.StudentReq) (*[]types.Student, error) {
 		return nil, err
 	}
 
-	for cur.Next(context.TODO()) {
-		var student types.Student
-		err = cur.Decode(&student)
-		if err != nil {
-			return nil, err
-		}
-		students = append(students, student)
+	if err = cur.All(context.TODO(), &students); err != nil {
+		return nil, err
 	}
 
 	return &students, nil
@@ -74,7 +71,9 @@ func SearchStudent(req types.StudentSearchReq) (*[]types.Student, error) {
 	var students []types.Student
 	findOptions := options.Find()
 	findOptions.SetLimit(30)
+
 	filter := bson.M{}
+
 	if req.ID != 0 {
 		filter["id"] = req.ID
 	}
@@ -82,6 +81,7 @@ func SearchStudent(req types.StudentSearchReq) (*[]types.Student, error) {
 	if req.Email != "" {
 		filter["email"] = primitive.Regex{Pattern: req.Email, Options: "i"}
 	}
+
 	if req.ClassName != "" {
 		filter["class_name"] = primitive.Regex{Pattern: req.ClassName, Options: "i"}
 	}
@@ -90,6 +90,7 @@ func SearchStudent(req types.StudentSearchReq) (*[]types.Student, error) {
 		filter["$or"] = bson.A{
 			bson.M{"first_name": primitive.Regex{Pattern: req.Name, Options: "i"}},
 			bson.M{"last_name": primitive.Regex{Pattern: req.Name, Options: "i"}},
+			bson.M{"email": primitive.Regex{Pattern: req.Name, Options: "i"}},
 		}
 	}
 
@@ -99,13 +100,34 @@ func SearchStudent(req types.StudentSearchReq) (*[]types.Student, error) {
 		return nil, err
 	}
 
-	for cur.Next(context.TODO()) {
-		var student types.Student
-		err = cur.Decode(&student)
-		if err != nil {
-			return nil, err
-		}
-		students = append(students, student)
+	if err = cur.All(context.TODO(), &students); err != nil {
+		return nil, err
+	}
+
+	return &students, nil
+}
+
+func GroupStudent() (*[]map[string]interface{}, error) {
+	var students []map[string]interface{}
+
+	pipeline := bson.A{
+		bson.M{"$match": bson.M{"last_name": "Nguyen"}},
+		bson.M{"$group": bson.M{
+			"_id":         "$last_name",
+			"class_name":  bson.M{"$first": "$class_name"},
+			"first_names": bson.M{"$push": "$first_name"},
+			"ids":         bson.M{"$push": "$id"},
+		}},
+	}
+
+	cur, err := Client.Database(dbName).Collection("student").Aggregate(context.TODO(), pipeline)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err = cur.All(context.TODO(), &students); err != nil {
+		return nil, err
 	}
 
 	return &students, nil

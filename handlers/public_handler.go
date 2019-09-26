@@ -38,11 +38,11 @@ func GetAllStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-func GroupStudent(c echo.Context) error {
-	student, _ := db.GroupStudentByLastName()
-	return c.JSON(http.StatusOK, student)
-}
-
 func CheckHealth(c echo.Context) error {
 	return c.String(http.StatusOK, "OK")
+}
+
+func GroupStudent(c echo.Context) error {
+	student, _ := db.GroupStudent()
+	return c.JSON(http.StatusOK, student)
 }
