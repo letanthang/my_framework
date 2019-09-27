@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: thang-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: thang-my-framework
+spec:
+  rules:
+    - host: go3008.info
+      http:
+        paths:
+          - path: /v1/public/student
+            backend:
+              serviceName: thang-my-framework-svc
+              servicePort: 9090
+          - path: /v1/staff/student
+            backend:
+              serviceName: thang-my-framework-svc
+              servicePort: 9090
+          - path: /v1/private/student
+            backend:
+              serviceName: thang-my-framework-svc
+              servicePort: 9090

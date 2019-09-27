@@ -23,5 +23,6 @@ COPY --from=builder /go/bin/main .
 ENV MONGO__URI mongodb+srv://mongoadmin:secret1234@cluster0-xxyrd.gcp.mongodb.net
 ENV MONGO__HOST mongo-docker
 ENV MONGO__USER mongoadmin
+#expose port
 EXPOSE 9090
 ENTRYPOINT ["./main"]

@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: staging-config
+  name: thang-staging-config
   namespace: default
 data:
   MONGO__URI: mongodb+srv://mongoadmin:secret1234@cluster0-xxyrd.gcp.mongodb.net
   MONGO__HOST: cluster0-xxyrd.gcp.mongodb.net
   MONGO__USER: mongoadmin
   MONGO__PASSWORD: secret1234
+  MONGO__TESTING: secret1234
