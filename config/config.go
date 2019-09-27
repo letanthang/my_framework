@@ -29,7 +29,7 @@ type Schema struct {
 
 	Encryption struct {
 		EncryptionKey string
-		EncryptSecret string
+		JWTSecret     string `mapstructure:"jwt_secret"`
 	}
 }
 
