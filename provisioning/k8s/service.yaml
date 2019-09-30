@@ -1,13 +1,16 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: thang-my-framework-svc
+  name: thang-APP_NAME-svc
 spec:
   selector:
-    app: thang-my-framework
+    app: thang-APP_NAME
   ports:
     - protocol: TCP
-      port: 9090
+      port: 8080
       targetPort: 9090
       name: goport
   type: NodePort
+---
+

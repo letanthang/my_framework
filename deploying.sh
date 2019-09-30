@@ -17,10 +17,11 @@ function build() {
     -t "letanthang/$APP_NAME" .
   
   # docker login -u letanthang --password $DOCKER_REGISTRY_KEY
-  # docker push letanthang/$APP_NAME
+  docker push letanthang/$APP_NAME
 
-  cd provisioning/k8s
-  sed 's/APP_NAME/'"$APP_NAME"'/g' deployment.yaml > zdeployment.yaml
+  cd provisioning/
+  sed 's/APP_NAME/'"$APP_NAME"'/g' k8s/* > zdeployment.yaml
+  cat zdeployment.yaml
   kubectl apply -f zdeployment.yaml
 }
 build
