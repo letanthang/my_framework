@@ -2,19 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: thang-APP_NAME-deploy
+  name: APP_NAME-deploy
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: thang-APP_NAME
+      app: APP_NAME
   template:
     metadata:
       labels:
-        app: thang-APP_NAME
+        app: APP_NAME
     spec:
       containers:
-        - name: thang-APP_NAME
+        - name: APP_NAME
           image: letanthang/APP_NAME
           ports:
             - containerPort: 80
