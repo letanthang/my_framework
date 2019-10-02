@@ -27,6 +27,24 @@ func AddStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, i)
 }
 
+func UpdateStudent(c echo.Context) error {
+	var req types.StudentUpdateReq
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, types.ErrorResponse{Code: "Bad request", Message: "Bad parameter"})
+	}
+
+	if err := validator.Validate(req); err != nil {
+		return c.JSON(http.StatusBadRequest, types.ErrorResponse{Code: "Bad request", Message: err.Error()})
+	}
+
+	i, err := db.UpdateStudent(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, types.ErrorResponse{Code: "bad request", Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, i)
+}
+
 func DeleteStudent(c echo.Context) error {
 	var req types.DeleteReq
 	if err := c.Bind(&req); err != nil {

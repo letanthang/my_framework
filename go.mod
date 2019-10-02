@@ -7,7 +7,7 @@ require (
 	github.com/go-playground/locales v0.12.1 // indirect
 	github.com/go-playground/universal-translator v0.16.0 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
-	github.com/labstack/gommon v0.3.0 // indirect
+	github.com/labstack/gommon v0.3.0
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/letanthang/mongo v0.0.2
 	github.com/letanthang/validator v0.0.0-20190907235915-5a19483431bb

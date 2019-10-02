@@ -30,5 +30,6 @@ func Staff(e *echo.Echo) {
 	}
 	staffRoute.Use(middleware.JWTWithConfig(config))
 	staffRoute.POST("/student", handlers.AddStudent)
+	staffRoute.PUT("/student", handlers.UpdateStudent)
 	staffRoute.DELETE("/student", handlers.DeleteStudent)
 }

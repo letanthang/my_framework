@@ -20,6 +20,13 @@ type StudentSearchReq struct {
 type StudentAddReq struct {
 	FirstName string `json:"first_name" validate:"required,min=2"`
 	LastName  string `json:"last_name" validate:"required,min=2"`
+	Email     string `json:"email" validate:"required,email,min=5"`
+	ClassName string `json:"class_name"`
+}
+type StudentUpdateReq struct {
+	ID        int    `json:"id" validate:"required"`
+	FirstName string `json:"first_name" validate:"required,min=2"`
+	LastName  string `json:"last_name" validate:"required,min=2"`
 	ClassName string `json:"class_name"`
 }
 
