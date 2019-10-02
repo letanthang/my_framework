@@ -14,7 +14,7 @@ func All(e *echo.Echo) {
 }
 
 func Public(e *echo.Echo) {
-	publicRoute := e.Group("/v1/public")
+	publicRoute := e.Group("/api/v1/public")
 	publicRoute.GET("/student", handlers.GetAllStudent)
 	publicRoute.PATCH("/student/simple", handlers.GetStudent)
 	publicRoute.PATCH("/student", handlers.SearchStudent)
@@ -23,7 +23,7 @@ func Public(e *echo.Echo) {
 }
 
 func Staff(e *echo.Echo) {
-	staffRoute := e.Group("/v1/staff")
+	staffRoute := e.Group("/api/v1/staff")
 	config := middleware.JWTConfig{
 		Claims:     &types.MyClaims{},
 		SigningKey: []byte(config.Config.Encryption.JWTSecret),

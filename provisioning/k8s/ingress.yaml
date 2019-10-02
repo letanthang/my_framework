@@ -14,15 +14,15 @@ spec:
     - host: go3008.info
       http:
         paths:
-          - path: /v1/public/student
+          - path: /api/v1/public/student
             backend:
               serviceName: APP_NAME-s
               servicePort: APP_NAME-s
-          - path: /v1/staff/student
+          - path: /api/v1/staff/student
             backend:
               serviceName: APP_NAME-s
               servicePort: APP_NAME-s
-          - path: /v1/private/student
+          - path: /api/v1/private/student
             backend:
               serviceName: APP_NAME-s
               servicePort: APP_NAME-s
