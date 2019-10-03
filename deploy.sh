@@ -1,5 +1,6 @@
 APP_NAME=$(basename $PWD)
-export APP_NAME=$(echo $APP_NAME | sed -e 's/_/-/g')
+export APP_NAME=$(echo $APP_NAME|sed -e 's/_/-/g'|cut -c1-7)
+echo $APP_NAME
 function build() {
   # registry_login
   
@@ -18,5 +19,10 @@ function build() {
   
   docker login -u letanthang --password $DOCKER_REGISTRY_KEY
   docker push letanthang/$APP_NAME
+
+  cd provisioning/
+  sed 's/APP_NAME/'"$APP_NAME"'/g' k8s/* > zdeployment.yaml
+  cat zdeployment.yaml
+  kubectl apply -f zdeployment.yaml
 }
 build
